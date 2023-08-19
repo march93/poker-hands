@@ -4,14 +4,14 @@ import (
 	"log"
 )
 
-func Validate(input []string) {
-	// Initialize ranks and suits to check against
-	ranks := map[string]bool{"2": true, "3": true, "4": true, "5": true, "6": true, "7": true, "8": true, "9": true, "T": true, "J": true, "Q": true, "K": true, "A": true}
-	suits := map[string]bool{"S": true, "H": true, "D": true, "C": true}
+// Initialize ranks and suits to check against
+var Ranks = map[string]int{"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "T": 10, "J": 11, "Q": 12, "K": 13, "A": 14}
+var Suits = map[string]bool{"S": true, "H": true, "D": true, "C": true}
 
+func Validate(input []string) {
 	// Hand length should be 5
 	if len(input) != 5 {
-		log.Fatalf("Require 5 cards, %v cards given", len(input))
+		log.Fatalf("Require 5 cards, %v card(s) given", len(input))
 	}
 
 	for _, card := range input {
@@ -21,15 +21,15 @@ func Validate(input []string) {
 		}
 
 		// Card must belong to one of the ranks
-		_, validRank := ranks[card[0:1]]
+		_, validRank := Ranks[card[0:1]]
 		if !validRank {
-			log.Fatalf("%v - invalid rank provided: %v", card, card[0:1])
+			log.Fatalf("%v - invalid rank provided: %v", card, card[0])
 		}
 
 		// Card must belong to one of the suits
-		_, validSuit := suits[card[1:]]
+		_, validSuit := Suits[card[1:]]
 		if !validSuit {
-			log.Fatalf("%v - invalid suit provided: %v", card, card[1:])
+			log.Fatalf("%v - invalid suit provided: %v", card, card[1])
 		}
 	}
 }
