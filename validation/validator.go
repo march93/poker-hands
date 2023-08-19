@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"fmt"
 	"log"
 )
 
@@ -16,8 +15,6 @@ func Validate(input []string) {
 	}
 
 	for _, card := range input {
-		fmt.Println(card)
-
 		// Card length should be 2
 		if len(card) != 2 {
 			log.Fatalf("Invalid card format provided: %v", card)
