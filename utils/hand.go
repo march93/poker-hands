@@ -25,8 +25,8 @@ type Hand struct {
 
 func determineHand() {}
 
-// Function to determine if a hand is a straight flush
-func isStraightFlush(cards []Card) bool {
+// Function to determine if a hand is a flush
+func isFlush(cards []Card) bool {
 	// Track the number of each suit and determine if
 	// there are 5 of any of one of them at the end
 	spades := 0
