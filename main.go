@@ -45,6 +45,6 @@ func evaluate(input [][]string) {
 	for _, hand := range input {
 		// Transform into card structs
 		cards := utils.Transform(hand)
-		fmt.Println(cards)
+		fmt.Printf("\n\nTransformed cards: %v\n\n", cards)
 	}
 }
