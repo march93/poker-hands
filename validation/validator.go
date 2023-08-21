@@ -5,8 +5,12 @@ import (
 )
 
 // Initialize ranks and suits to check against
+
+// Integer representation of ranks
 var Ranks = map[string]int{"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "T": 10, "J": 11, "Q": 12, "K": 13, "A": 14}
-var Suits = map[string]bool{"S": true, "H": true, "D": true, "C": true}
+
+// Mapping of suits
+var Suits = map[string]string{"S": "Spades", "H": "Hearts", "D": "Diamonds", "C": "Clubs"}
 
 func Validate(input []string) {
 	// Hand length should be 5
