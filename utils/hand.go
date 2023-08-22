@@ -58,6 +58,38 @@ func isRoyalFlush(cards []Card) bool {
 	return ace && king && queen && jack && ten
 }
 
+// Function to determine if a hand is a straight flush
+func isStraightFlush(cards []Card) bool {
+	// Check for flush and straight
+	return isFlush(cards) && isStraight(cards)
+}
+
+// Function to determine if a hand is a four of a kind.
+// Instead of double looping through every combination,
+// we consider a different approach
+func isFourOfAKind(cards []Card) bool {
+	// Since our cards are already sorted, there are only
+	// two ways we can have a four of a kind setup
+	// [A A A A 3] or [A 3 3 3 3] front or back
+	// So we just need to check these two conditions
+	front := (cards[0] == cards[1]) && (cards[0] == cards[2]) && (cards[0] == cards[3])
+	back := (cards[4] == cards[3]) && (cards[4] == cards[2]) && (cards[4] == cards[1])
+
+	return front || back
+}
+
+// Function to determine if a hand is a full house.
+// We also consider a different approach vs double loops
+func isFullHouse(cards []Card) bool {
+	// Since cards are sorted, there are only two ways
+	// to form a full house with our hand.
+	// [X X X Y Y] or [X X Y Y Y]
+	front := (cards[0] == cards[1]) && (cards[0] == cards[2]) && (cards[0] != cards[3]) && (cards[3] == cards[4])
+	back := (cards[0] == cards[1]) && (cards[0] != cards[2]) && (cards[2] == cards[3]) && (cards[2] == cards[4])
+
+	return front || back
+}
+
 // Function to determine if a hand is a flush
 func isFlush(cards []Card) bool {
 	// Track the number of each suit and determine if
@@ -99,4 +131,32 @@ func isStraight(cards []Card) bool {
 	}
 
 	return true
+}
+
+// Function to determine if a hand is a three of a kind
+func isThreeOfAKind(cards []Card) bool {
+	// Use a map to track rank occurrences and
+	// the largest total occurrence so far
+	rankMap := make(map[int]int)
+	max := 0
+
+	for _, card := range cards {
+		// Fetch rank total from the map
+		total, ok := rankMap[card.Rank]
+
+		if ok {
+			// If it exists in the map, increment total
+			rankMap[card.Rank] = total + 1
+		} else {
+			// Otherwise, create new entry
+			rankMap[card.Rank] = 1
+		}
+
+		// Update max if new value is larger
+		if rankMap[card.Rank] > max {
+			max = rankMap[card.Rank]
+		}
+	}
+
+	return max == 3
 }
