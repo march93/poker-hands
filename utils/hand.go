@@ -16,6 +16,18 @@ import (
  *	Pair -> 1
  *	High card -> 0
  */
+const (
+	RoyalFlush    = 9
+	StraightFlush = 8
+	FourOfAKind   = 7
+	FullHouse     = 6
+	Flush         = 5
+	Straight      = 4
+	ThreeOfAKind  = 3
+	TwoPair       = 2
+	Pair          = 1
+	HighCard      = 0
+)
 
 type Hand struct {
 	Cards []Card
@@ -23,7 +35,30 @@ type Hand struct {
 	Score int
 }
 
-func determineHand() {}
+// Return an int value representation of a hand's rank
+func determineHand(hand []Card) int {
+	if isRoyalFlush(hand) {
+		return RoyalFlush
+	} else if isStraightFlush(hand) {
+		return StraightFlush
+	} else if isFourOfAKind(hand) {
+		return FourOfAKind
+	} else if isFullHouse(hand) {
+		return FullHouse
+	} else if isFlush(hand) {
+		return Flush
+	} else if isStraight(hand) {
+		return Straight
+	} else if isThreeOfAKind(hand) {
+		return ThreeOfAKind
+	} else if isTwoPair(hand) {
+		return TwoPair
+	} else if isPair(hand) {
+		return Pair
+	} else {
+		return HighCard
+	}
+}
 
 // Function to determine if a hand is a royal flush
 func isRoyalFlush(cards []Card) bool {
