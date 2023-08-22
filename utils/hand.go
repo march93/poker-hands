@@ -190,3 +190,33 @@ func isTwoPair(cards []Card) bool {
 	// total unique ranks and the largest occurrence is 2
 	return len(rankMap) == 3 && max == 2
 }
+
+// Function to determine if a hand is a pair
+func isPair(cards []Card) bool {
+	// Use a map to track rank occurrences and
+	// the largest occurrence so far
+	rankMap := make(map[int]int)
+	max := 0
+
+	for _, card := range cards {
+		// Fetch rank total from the map
+		total, ok := rankMap[card.Rank]
+
+		if ok {
+			// If it exists in the map, increment total
+			rankMap[card.Rank] = total + 1
+		} else {
+			// Otherwise, create new entry
+			rankMap[card.Rank] = 1
+		}
+
+		// Update max if new value is larger
+		if rankMap[card.Rank] > max {
+			max = rankMap[card.Rank]
+		}
+	}
+
+	// For a pair, we must ensure that there are 4
+	// total unique ranks and the largest occurrence is 2
+	return len(rankMap) == 4 && max == 2
+}
