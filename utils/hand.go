@@ -72,8 +72,8 @@ func isFourOfAKind(cards []Card) bool {
 	// two ways we can have a four of a kind setup
 	// [A A A A 3] or [A 3 3 3 3] front or back
 	// So we just need to check these two conditions
-	front := (cards[0] == cards[1]) && (cards[0] == cards[2]) && (cards[0] == cards[3])
-	back := (cards[4] == cards[3]) && (cards[4] == cards[2]) && (cards[4] == cards[1])
+	front := (cards[0].Rank == cards[1].Rank) && (cards[0].Rank == cards[2].Rank) && (cards[0].Rank == cards[3].Rank)
+	back := (cards[4].Rank == cards[3].Rank) && (cards[4].Rank == cards[2].Rank) && (cards[4].Rank == cards[1].Rank)
 
 	return front || back
 }
@@ -84,8 +84,8 @@ func isFullHouse(cards []Card) bool {
 	// Since cards are sorted, there are only two ways
 	// to form a full house with our hand.
 	// [X X X Y Y] or [X X Y Y Y]
-	front := (cards[0] == cards[1]) && (cards[0] == cards[2]) && (cards[0] != cards[3]) && (cards[3] == cards[4])
-	back := (cards[0] == cards[1]) && (cards[0] != cards[2]) && (cards[2] == cards[3]) && (cards[2] == cards[4])
+	front := (cards[0].Rank == cards[1].Rank) && (cards[0].Rank == cards[2].Rank) && (cards[0].Rank != cards[3].Rank) && (cards[3].Rank == cards[4].Rank)
+	back := (cards[0].Rank == cards[1].Rank) && (cards[0].Rank != cards[2].Rank) && (cards[2].Rank == cards[3].Rank) && (cards[2].Rank == cards[4].Rank)
 
 	return front || back
 }
@@ -159,4 +159,34 @@ func isThreeOfAKind(cards []Card) bool {
 	}
 
 	return max == 3
+}
+
+// Function to determine if a hand is a two pair
+func isTwoPair(cards []Card) bool {
+	// Use a map to track rank occurrences and
+	// the largest occurrence so far
+	rankMap := make(map[int]int)
+	max := 0
+
+	for _, card := range cards {
+		// Fetch rank total from the map
+		total, ok := rankMap[card.Rank]
+
+		if ok {
+			// If it exists in the map, increment total
+			rankMap[card.Rank] = total + 1
+		} else {
+			// Otherwise, create new entry
+			rankMap[card.Rank] = 1
+		}
+
+		// Update max if new value is larger
+		if rankMap[card.Rank] > max {
+			max = rankMap[card.Rank]
+		}
+	}
+
+	// For two pair, we must ensure that there are 3
+	// total unique ranks and the largest occurrence is 2
+	return len(rankMap) == 3 && max == 2
 }
