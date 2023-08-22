@@ -25,6 +25,39 @@ type Hand struct {
 
 func determineHand() {}
 
+// Function to determine if a hand is a royal flush
+func isRoyalFlush(cards []Card) bool {
+	// Since a royal flush needs to be straight AND flush, we
+	// can utilize the functions defined below for the first part
+	if !isFlush(cards) || !isStraight(cards) {
+		return false
+	}
+
+	// Now we just need to check that the hand includes all royal cards
+	ace := false
+	king := false
+	queen := false
+	jack := false
+	ten := false
+
+	for _, card := range cards {
+		switch card.Rank {
+		case 14:
+			ace = true
+		case 13:
+			king = true
+		case 12:
+			queen = true
+		case 11:
+			jack = true
+		case 10:
+			ten = true
+		}
+	}
+
+	return ace && king && queen && jack && ten
+}
+
 // Function to determine if a hand is a flush
 func isFlush(cards []Card) bool {
 	// Track the number of each suit and determine if
@@ -55,7 +88,7 @@ func isFlush(cards []Card) bool {
 }
 
 // Function to determine if a hand is a straight
-func IsStraight(cards []Card) bool {
+func isStraight(cards []Card) bool {
 	for i := 0; i < len(cards)-1; i++ {
 		// Since our hand is sorted by highest value first,
 		// we can check if the value of each subsequent card
