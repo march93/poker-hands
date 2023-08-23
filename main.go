@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"poker-hands/utils"
 	"poker-hands/validation"
 	"sort"
@@ -25,10 +26,18 @@ func main() {
 	hands := [][]string{}
 
 	for input != "done" {
+		// Empty string
+		if len(input) == 0 {
+			log.Fatalln("Empty string provided")
+		}
+
 		s := strings.Split(input, ",")
 
 		// Validate input for hand length, card value
-		validation.Validate(s)
+		err := validation.Validate(s)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
 
 		// Add valid input to hands slice
 		hands = append(hands, s)
