@@ -31,6 +31,16 @@ Pass in a string of poker hands and the program will sort them in descending ord
 ### Tests
 - To run tests, run `go test -v ./...` to run the full suite of tests.
 
+### Algorithm
+- To compare different hands, this program uses a bit representation of each hand to determine a unique value.
+- The card types can be coded in 4 bits, and each card afterwards can also be coded in 4 bits each.
+- This brings the total to 4 * 6 = 24 bits.
+- In sorted order, we can organize our bits as [type card card card card card] with the strongest card in front.
+- If we convert this entire binary representation into an integer, we can obtain a unique value to compare against.
+- For hands of the same type but different suits (i.e. royal flush with spades vs royal flush with diamonds),
+  this algorithm will give the same value as it won't compare against suits. This is due to the fact that in game,
+  it's impossible to achieve these two hands, so it's been left out here.
+
 ### Time Complexity
 - For input size k, and hand of size n cards.
 - For each input, we loop through `O(k)` times and validate each card `O(n)` -> `O(k*n)`.
