@@ -36,7 +36,7 @@ type Hand struct {
 }
 
 // Return an int value representation of a hand's rank
-func determineHand(hand []Card) int {
+func DetermineHand(hand []Card) int {
 	if isRoyalFlush(hand) {
 		return RoyalFlush
 	} else if isStraightFlush(hand) {

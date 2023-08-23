@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"poker-hands/utils"
 	"poker-hands/validation"
+	"sort"
 	"strings"
 )
 
@@ -24,10 +26,18 @@ func main() {
 	hands := [][]string{}
 
 	for input != "done" {
+		// Empty string
+		if len(input) == 0 {
+			log.Fatalln("Empty string provided")
+		}
+
 		s := strings.Split(input, ",")
 
 		// Validate input for hand length, card value
-		validation.Validate(s)
+		err := validation.Validate(s)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
 
 		// Add valid input to hands slice
 		hands = append(hands, s)
@@ -38,13 +48,32 @@ func main() {
 	}
 
 	fmt.Printf("\nAll inputs: %v\n\n", hands)
-	evaluate(hands)
-}
+	eval := evaluate(hands)
 
-func evaluate(input [][]string) {
-	for _, hand := range input {
-		// Transform into card structs
-		cards := utils.Transform(hand)
-		fmt.Printf("\n\nTransformed cards: %v\n\n", cards)
+	for _, hand := range eval {
+		fmt.Printf("Hand: %v, Score: %v\n", hand.Cards, hand.Score)
 	}
 }
+
+func evaluate(input [][]string) []utils.Hand {
+	allHands := []utils.Hand{}
+
+	for _, hand := range input {
+		// Transform into card and hand structs
+		cards := utils.Transform(hand)
+		hand := utils.Hand{Cards: cards, Type: utils.DetermineHand(cards), Score: utils.BinaryTransform(cards)}
+		allHands = append(allHands, hand)
+	}
+
+	// Sort hands based on highest score in descending order
+	sort.SliceStable(allHands, func(i, j int) bool {
+		return allHands[i].Score > allHands[j].Score
+	})
+
+	return allHands
+}
+
+// Examples
+// AH,JH,QH,KH,TH
+// 2H,3S,TD,6C,JH
+// 8H,8S,8C,8D,TH

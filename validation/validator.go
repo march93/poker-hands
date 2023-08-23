@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"log"
+	"fmt"
 )
 
 // Initialize ranks and suits to check against
@@ -12,28 +12,30 @@ var Ranks = map[string]int{"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 
 // Mapping of suits
 var Suits = map[string]string{"S": "Spades", "H": "Hearts", "D": "Diamonds", "C": "Clubs"}
 
-func Validate(input []string) {
+func Validate(input []string) error {
 	// Hand length should be 5
 	if len(input) != 5 {
-		log.Fatalf("Require 5 cards, %v card(s) given", len(input))
+		return fmt.Errorf("require 5 cards, %v card(s) given", len(input))
 	}
 
 	for _, card := range input {
 		// Card length should be 2
 		if len(card) != 2 {
-			log.Fatalf("Invalid card format provided: %v", card)
+			return fmt.Errorf("invalid card format provided: %v", card)
 		}
 
 		// Card must belong to one of the ranks
 		_, validRank := Ranks[card[0:1]]
 		if !validRank {
-			log.Fatalf("%v - invalid rank provided: %v", card, card[0])
+			return fmt.Errorf("%v - invalid rank provided: %c", card, card[0])
 		}
 
 		// Card must belong to one of the suits
 		_, validSuit := Suits[card[1:]]
 		if !validSuit {
-			log.Fatalf("%v - invalid suit provided: %v", card, card[1])
+			return fmt.Errorf("%v - invalid suit provided: %c", card, card[1])
 		}
 	}
+
+	return nil
 }
